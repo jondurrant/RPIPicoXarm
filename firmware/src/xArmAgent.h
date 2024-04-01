@@ -104,6 +104,11 @@ private:
 
 	sensor_msgs__msg__JointState xJointStateMsg;
 	const char *pJoint6Name = "arm6";
+	const char *pJoint5Name = "arm5";
+	const char *pJoint4Name = "arm4";
+	const char *pJoint3Name = "arm3";
+	const char *pJoint2Name = "arm2";
+	const char *pJoint1Name = "arm1";
 
 	xArmServosRad * pArm = NULL;
 

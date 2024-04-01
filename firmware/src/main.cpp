@@ -110,6 +110,36 @@ void mainTask(void *params){
 	bridge->start("Bridge",  TASK_PRIORITY+2);
 	armAgent.start("xArm Agent", TASK_PRIORITY);
 
+
+	for (int i=1; i <= 6; i++){
+		xarm.setPosition(i,  500);
+		vTaskDelay(100);
+	}
+
+	vTaskDelay(2000);
+
+	for (int i=1; i <= 6; i++){
+		xarm.servoOff(i);
+		vTaskDelay(100);
+	}
+
+	for (;;){
+		vTaskDelay(1000);
+	}
+
+	for (;;){
+		printf("POS: ");
+		for (int i=5; i >=0; i--){
+			printf("%d=%.2f, ",
+				i + 1,
+				xarm.getRadPos(i)
+				);
+		}
+		printf("\n");
+		vTaskDelay(1000);
+	}
+
+
    // xarm.setPosition(3,  50);
    // xarm.servoOff(3);
 	//xarm.servoOff(4);
@@ -124,47 +154,49 @@ void mainTask(void *params){
 	}
 
 
-	    int pos = 100;
-	    bool dir = true;
-		for (;;){
-				printf("Set %u\n", pos);
-				//xarm.setPosition(6, i, 300, true);
-				for (int j=0; j < 6; j++){
-					servos[j].position = pos;
+	int pos = 100;
+	bool dir = true;
+	for (;;){
+			printf("Set %u\n", pos);
+			//xarm.setPosition(6, i, 300, true);
+			for (int j=0; j < 6; j++){
+				servos[j].position = pos;
+			}
+			//xarm.setPosition( servos, 4,  1000,   true);
+			sleep_ms(1000);
+			//printf("Get (%d) %d\n", i, xarm.getPosition(6));
+
+
+			printf("%d, %d, %d, %d \n",
+					xarm.getPosition(3),
+					xarm.getPosition(4),
+					xarm.getPosition(5),
+					xarm.getPosition(6)
+					);
+
+			printf("%.2f, %.2f, %.2f, %.2f \n",
+					xarm.getRadPos(3),
+					xarm.getRadPos(4),
+					xarm.getRadPos(5),
+					xarm.getRadPos(6)
+					);
+
+
+			if (dir){
+				pos += 100;
+				if (pos > 900){
+					pos = 800;
+					dir = false;
 				}
-				xarm.setPosition( servos, 4,  1000,   true);
-				sleep_ms(1000);
-				//printf("Get (%d) %d\n", i, xarm.getPosition(6));
-
-				printf("%d, %d, %d, %d \n",
-						xarm.getPosition(3),
-						xarm.getPosition(4),
-						xarm.getPosition(5),
-						xarm.getPosition(6)
-						);
-
-				printf("%.2f, %.2f, %.2f, %.2f \n",
-						xarm.getRadPos(3),
-						xarm.getRadPos(4),
-						xarm.getRadPos(5),
-						xarm.getRadPos(6)
-						);
-
-				if (dir){
-					pos += 100;
-					if (pos > 900){
-						pos = 800;
-						dir = false;
-					}
-				} else {
-					pos -= 100;
-					if (pos < 100){
-						pos = 200;
-						dir = true;
-					}
+			} else {
+				pos -= 100;
+				if (pos < 100){
+					pos = 200;
+					dir = true;
 				}
-				sleep_ms(2000);
-		}
+			}
+			sleep_ms(2000);
+	}
 }
 
 

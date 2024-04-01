@@ -134,20 +134,39 @@ void xArmAgent::handleSubscriptionMsg(const void* msg, uRosSubContext_t* Context
 void xArmAgent::setupRosMsgs(){
 	//Setup the joint state msg
 	sensor_msgs__msg__JointState__init(&xJointStateMsg);
-	rosidl_runtime_c__double__Sequence__init(&xJointStateMsg.position, 1);
-	xJointStateMsg.position.data[0] = 0.0;
-	xJointStateMsg.position.size = 1;
-	xJointStateMsg.position.capacity = 1;
+	rosidl_runtime_c__double__Sequence__init(&xJointStateMsg.position, 6);
+	for (int i=0; i < 6; i++){
+		xJointStateMsg.position.data[i] = 0.0;
+	}
+	xJointStateMsg.position.size = 6;
+	xJointStateMsg.position.capacity = 6;
+	/*
 	rosidl_runtime_c__double__Sequence__init(&xJointStateMsg.velocity, 1);
 	xJointStateMsg.velocity.data[0] = 0.0;
 	xJointStateMsg.velocity.size = 1;
 	xJointStateMsg.velocity.capacity = 1;
-	rosidl_runtime_c__String__Sequence__init(&xJointStateMsg.name, 1);
+	*/
+	rosidl_runtime_c__String__Sequence__init(&xJointStateMsg.name, 6);
 	if (!rosidl_runtime_c__String__assign(&xJointStateMsg.name.data[0], pJoint6Name)){
 		printf("ERROR: Joined assignment failed\n");
 	}
-	xJointStateMsg.name.size=1;
-	xJointStateMsg.name.capacity=1;
+	if (!rosidl_runtime_c__String__assign(&xJointStateMsg.name.data[1], pJoint5Name)){
+		printf("ERROR: Joined assignment failed\n");
+	}
+	if (!rosidl_runtime_c__String__assign(&xJointStateMsg.name.data[2], pJoint4Name)){
+		printf("ERROR: Joined assignment failed\n");
+	}
+	if (!rosidl_runtime_c__String__assign(&xJointStateMsg.name.data[3], pJoint3Name)){
+		printf("ERROR: Joined assignment failed\n");
+	}
+	if (!rosidl_runtime_c__String__assign(&xJointStateMsg.name.data[4], pJoint2Name)){
+		printf("ERROR: Joined assignment failed\n");
+	}
+	if (!rosidl_runtime_c__String__assign(&xJointStateMsg.name.data[5], pJoint1Name)){
+		printf("ERROR: Joined assignment failed\n");
+	}
+	xJointStateMsg.name.size=6;
+	xJointStateMsg.name.capacity=6;
 }
 
 /***
@@ -159,9 +178,20 @@ void xArmAgent::pubRosPos(){
 
 	xJointStateMsg.header.stamp.sec = time / 1000000000;
 	xJointStateMsg.header.stamp.nanosec = time % 1000000000;
-	double a = pArm->getRadPos(6);
-	xJointStateMsg.position.data[0] = a;
-	xJointStateMsg.velocity.data[0] = 0.0;
+	for (int i =0; i < 5; i++){
+		double a = pArm->getRadPos(6 -i);
+		if (a >= 0.0){
+			xJointStateMsg.position.data[i] = 2.07 - a;
+		} else {
+			printf("Read failure on %d\n", 6-i);
+		}
+		vTaskDelay(100);
+		//xJointStateMsg.position.data[i] =  0.0;
+	}
+	double a = pArm->getRadPos(1);
+	if (a >= 0.0){
+		xJointStateMsg.position.data[5] =  a;
+	}
 	if (!uRosBridge::getInstance()->publish(&xPubJoint,
 			&xJointStateMsg,
 			this,
