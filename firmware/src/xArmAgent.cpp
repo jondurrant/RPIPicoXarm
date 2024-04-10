@@ -181,16 +181,18 @@ void xArmAgent::pubRosPos(){
 	for (int i =0; i < 5; i++){
 		double a = pArm->getRadPos(6 -i);
 		if (a >= 0.0){
-			xJointStateMsg.position.data[i] = 2.07 - a;
+				xJointStateMsg.position.data[i] = 2.07 - a;
 		} else {
 			printf("Read failure on %d\n", 6-i);
 		}
 		vTaskDelay(100);
 		//xJointStateMsg.position.data[i] =  0.0;
 	}
+
+	// Gripper
 	double a = pArm->getRadPos(1);
 	if (a >= 0.0){
-		xJointStateMsg.position.data[5] =  a;
+		xJointStateMsg.position.data[5] =  2.8 - a;
 	}
 	if (!uRosBridge::getInstance()->publish(&xPubJoint,
 			&xJointStateMsg,
