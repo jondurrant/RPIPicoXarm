@@ -13,9 +13,11 @@
 
 #include "xArmServosRad.h"
 
-extern "C"{
 #include <sensor_msgs/msg/joint_state.h>
-}
+#include <control_msgs/msg/joint_jog.h>
+
+#include <queue.h>
+#include <semphr.h>
 
 class xArmAgent  : public Agent, public uRosEntities {
 public:
@@ -111,6 +113,13 @@ private:
 	const char *pJoint1Name = "arm1";
 
 	xArmServosRad * pArm = NULL;
+
+	rcl_subscription_t 								xSubJointJog;
+	uRosSubContext_t   							xSubJointJogContext;
+	control_msgs__msg__JointJog	xJointJogMsg;
+
+	QueueHandle_t xCmdQueue;
+	SemaphoreHandle_t xArmSemaphore;
 
 };
 

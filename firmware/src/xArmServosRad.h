@@ -21,6 +21,8 @@ public:
 
 	 float getRadPos(int servo_id);
 
+	 void setRadPos(int servo_id, float rad, unsigned duration = 1000);
+
 
 };
 

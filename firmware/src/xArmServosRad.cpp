@@ -6,6 +6,7 @@
  */
 
 #include "xArmServosRad.h"
+#include <cstdio>
 
 xArmServosRad::xArmServosRad(xArmMode mode, uart_inst_t * uart): xArmServoController(mode, uart) {
 	// NOP
@@ -27,4 +28,18 @@ float xArmServosRad::getRadPos(int servo_id){
 
 	float rad = p * (4.18879 / 1000);
 	return rad;
+}
+
+
+void xArmServosRad::setRadPos(
+		int servo_id,
+		float rad,
+		unsigned duration){
+	if ((rad < 0.0) || (rad > 4.18879)) {
+		return;
+	}
+
+	int p = (int)((rad / 4.18879 ) * 1000.0);
+	printf("Setting %d (%f) to %d\n", servo_id, rad, p);
+	setPosition(servo_id, p, duration, false);
 }
