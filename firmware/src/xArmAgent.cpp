@@ -161,6 +161,7 @@ void xArmAgent::run(){
 
 			if (( now - lastPub) > 500){
 				pubRosPos();
+				lastPub = now;
 			}
 		}
 		vTaskDelay(10);
