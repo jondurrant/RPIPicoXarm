@@ -25,8 +25,10 @@ extern"C"{
 //Standard Task priority
 #define TASK_PRIORITY		( tskIDLE_PRIORITY + 1UL )
 
-#define GP_STATUS 20
-#define GP_BLINK 18
+#define GP_STATUS 5
+#define GP_BLINK 2
+#define GP_U1TX 20
+#define GP_U1RX 21
 
 
 /***
@@ -98,8 +100,8 @@ void mainTask(void *params){
 	//gpio_set_function(21, GPIO_FUNC_UART);
 	//gpio_set_function(8, GPIO_FUNC_UART);
 	//gpio_set_function(9, GPIO_FUNC_UART);
-	gpio_set_function(4, GPIO_FUNC_UART);
-	gpio_set_function(5, GPIO_FUNC_UART);
+	gpio_set_function(GP_U1TX, GPIO_FUNC_UART);
+	gpio_set_function(GP_U1RX, GPIO_FUNC_UART);
 
 
 	//xArmServoController xarm( xArm,  uart1);

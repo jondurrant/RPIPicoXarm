@@ -8,3 +8,9 @@
 	path = firmware/lib/micro_ros_raspberrypi_pico_sdk
 	url = https://github.com/micro-ROS/micro_ros_raspberrypi_pico_sdk
 	branch = humble
+[submodule "firmware2350/lib/eigen"]
+	path = firmware2350/lib/eigen
+	url = https://gitlab.com/libeigen/eigen
+[submodule "firmware2350/lib/micro_ros_raspberrypi_pico_sdk"]
+	path = firmware2350/lib/micro_ros_raspberrypi_pico_sdk
+	url = https://github.com/micro-ROS/micro_ros_raspberrypi_pico_sdk

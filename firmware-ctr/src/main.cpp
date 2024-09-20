@@ -94,8 +94,10 @@ void mainTask(void *params){
 
 	uart_init(uart1, 9600);
 	uart_set_format( uart1,  8,  1, UART_PARITY_NONE);
-	gpio_set_function(20, GPIO_FUNC_UART);
-	gpio_set_function(21, GPIO_FUNC_UART);
+	//gpio_set_function(20, GPIO_FUNC_UART);
+	//gpio_set_function(21, GPIO_FUNC_UART);
+	gpio_set_function(4, GPIO_FUNC_UART);
+	gpio_set_function(5, GPIO_FUNC_UART);
 
 	//xArmServoController xarm( xArm,  uart1);
 	xArmServosRad xarm( xArm,  uart1);
